@@ -1,40 +1,42 @@
-# ------------------------- Import Library
-
 import cv2
-import numpy as np  # Importing NumPy library for numerical operations
-from ultralytics import YOLO  # Importing YOLO from ultralytics package
-import pandas as pd  # Importing Pandas library for data manipulation and analysis
-import time  # Importing Time module for timing operations
+import pandas as pd
+import numpy as np
+from ultralytics import YOLO
 
-# ------------------------------ Import Model
-
-# in this line we import the model we trained in Car Object Detection file
-
-model = YOLO('./best.pt')
+model = YOLO('best.pt')
 
 
-# fining the mouse position
 def RGB(event, x, y, flags, param):
     if event == cv2.EVENT_MOUSEMOVE:
         colorsBGR = [x, y]
         print(colorsBGR)
 
 
-# cv2.namedWindow('combined_video1')
-# cv2.setMouseCallback('combined_video1', RGB)
-# cv2.namedWindow('combined_video2')
-# cv2.setMouseCallback('combined_video2', RGB)
+cv2.namedWindow('RGB')
+cv2.setMouseCallback('RGB', RGB)
 
-# ----------------------------- Read Class
+cap = cv2.VideoCapture('download.mp4')
+
 my_file = open("coco.txt", "r")
 data = my_file.read()
 class_list = data.split("\n")
 print(class_list)
-# count=0
+count = 0
+while True:
 
+    ret, frame = cap.read()
+    if not ret:
+        break
+    count += 1
+    if count % 3 != 0:
+        continue
+    frame = cv2.resize(frame, (1020, 500))
 
-# --------------------------------- Read video
-isopen = True
-while isopen:
-    cap1 = cv2.VideoCapture('download.mp4')
+    results = model.predict(frame, show=True)
 
+    cv2.imshow("RGB", frame)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
