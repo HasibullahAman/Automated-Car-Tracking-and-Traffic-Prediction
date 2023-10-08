@@ -1,11 +1,14 @@
+# ------------------------- import libraries
 import cv2
 import pandas as pd
 import numpy as np
 from ultralytics import YOLO
 
+# ---------------------------- import model
 model = YOLO('best.pt')
 
 
+# -------------------------- add mouse option for finding the line x and y coordinate
 def RGB(event, x, y, flags, param):
     if event == cv2.EVENT_MOUSEMOVE:
         colorsBGR = [x, y]
@@ -15,12 +18,15 @@ def RGB(event, x, y, flags, param):
 cv2.namedWindow('RGB')
 cv2.setMouseCallback('RGB', RGB)
 
-cap = cv2.VideoCapture('download.mp4')
-
+# -----------------------------------import video file
+cap = cv2.VideoCapture('vidyolov8.mp4')
+# ----------------------------------- Read the class file
 my_file = open("coco.txt", "r")
 data = my_file.read()
 class_list = data.split("\n")
 print(class_list)
+
+
 count = 0
 while True:
 
