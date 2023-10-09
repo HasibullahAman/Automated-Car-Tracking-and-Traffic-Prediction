@@ -57,5 +57,6 @@ while True:
     cv2.imshow("RGB", frame)
     if cv2.waitKey(1) & 0xFF == 27:
         break
+print("My name is hasib")
 cap.release()
 cv2.destroyAllWindows()
