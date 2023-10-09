@@ -30,6 +30,9 @@ count = 0
 while True:
 
     ret, frame = cap.read()
+    # two variable:
+        # ret, which indicates whether a frame was successfully read (True or False)
+        # and frame, which is the actual frame/image data.
     if not ret:
         break
     count += 1
@@ -38,10 +41,10 @@ while True:
     frame = cv2.resize(frame, (1020, 500))
 
     results = model.predict(frame)
-# ---------------------------- draw a lin and display the class name
+    # ---------------------------- draw a lin and display the class name
     a = results[0].boxes.data
     px = pd.DataFrame(a).astype('float')
-    for index,row in px.iterrows():
+    for index, row in px.iterrows():
         x1 = int(row[0])
         y1 = int(row[1])
         x2 = int(row[2])
@@ -49,7 +52,7 @@ while True:
         d = int(row[5])
         c = class_list[d]
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 1)
-        cv2.putText(frame, str(c), (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0,0), 1)
+        cv2.putText(frame, str(c), (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 1)
 
     cv2.imshow("RGB", frame)
     if cv2.waitKey(1) & 0xFF == 27:
