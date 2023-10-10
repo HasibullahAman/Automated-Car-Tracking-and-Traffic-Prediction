@@ -13,6 +13,10 @@ model = YOLO('best.pt')
 area = [(283, 281), (203, 307), (549, 343), (562, 295)]
 tracker = Tracker()
 area_set = set()
+car_count = set()
+bike_cout = set()
+bus_count = set()
+truck_count = set()
 def RGB(event, x, y, flags, param):
     if event == cv2.EVENT_MOUSEMOVE:
         colorsBGR = [x, y]
@@ -71,6 +75,14 @@ while True:
             # show the object ID when detect
             # cv2.putText(frame, str(id), (x3, y3), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 1)
             area_set.add(id)
+            if d == 0:
+                bike_cout.add(id)
+            elif d == 1:
+                truck_count.add(id)
+            elif d== 2:
+                car_count.add(id)
+            elif d == 3:
+                bus_count.add(id)
     cv2.polylines(frame, [np.array(area, np.int32)], True, (255, 255, 0), 1) # draw a box which we count the object in
     count = len(area_set)
     cv2.putText(frame, str(count), (50, 50), cv2.FONT_HERSHEY_PLAIN, 0.9, (255, 255, 255), 1)  # show the count of car in the frame

@@ -101,6 +101,7 @@ truck_count = 0
 bike_count = 0
 count = 0
 class_counts = pd.DataFrame(columns=['Date', 'Day of Week', 'Time', 'Buses', 'Cars', 'Trucks', 'Bikes', 'Total'])
+
 while True:
 
     ret, frame = cap.read()
@@ -133,13 +134,13 @@ while True:
         cx = int(x3+x4) // 2
         cy = int(y3+y4) // 2
         results = cv2.pointPolygonTest(np.array(area, np.int32), (cx, cy), False)
-        if 'bus' in c:
+        if 'bike' in c:
             bus_count += 1
-        elif 'car' in c:
-            car_count += 1
         elif 'truck' in c:
+            car_count += 1
+        elif 'car' in c:
             truck_count += 1
-        elif 'bike' in c:
+        elif 'bus' in c:
             bike_count += 1
         if results >= 0:
             # show the center of object
