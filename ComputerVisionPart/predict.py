@@ -5,23 +5,31 @@ import numpy as np
 from ultralytics import YOLO
 from tracker import * # this module used for tracking
 from datetime import datetime, timedelta
+from AddLabel import Addlabel
 
 # ---------------------------- import model
 model = YOLO('../Model/best.pt')
 
 # Create a DataFrame to store the count data
-df = pd.DataFrame(columns=['Date', 'Day of the week', 'CarCount', 'BikeCount', 'BusCount', 'TruckCount', 'Total'])
+df = pd.DataFrame(columns=['time', 'Date', 'Day of the week', 'CarCount', 'BikeCount', 'BusCount', 'TruckCount', 'Total'])
 # Function to update the DataFrame and save it to CSV
 def update_csv(car_count,bike_count,bus_count,truck_count):
     now = datetime.now()
+    current_time = datetime.now()
+    time = current_time.strftime("%H:%M:%S")
     date = now.strftime("%d")
     day = now.strftime("%A")
     total_count = car_count + bike_count + bus_count + truck_count
-    new_row = {'Date': date, 'Day of the week': day, 'CarCount': car_count, 'BikeCount': bike_count,
+    new_row = {"Time": time ,'Date': date, 'Day of the week': day, 'CarCount': car_count, 'BikeCount': bike_count,
                'BusCount': bus_count, 'TruckCount': truck_count, 'Total': total_count}
     df.loc[len(df)] = new_row
     df.to_csv('counting_data.csv', index=False)
+    # update the lebel for this round
+    Addlabel()
 
+def AddLebel(total,bus_count,truck_count):
+    df = pd.read_csv("counting_data.csv")
+    # df.head
 
 # -------------------------- add mouse option for finding the line x and y coordinate
 area = [(283, 281), (203, 307), (549, 343), (562, 295)]
